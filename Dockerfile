@@ -21,3 +21,5 @@ COPY --from=builder /usr/local/lib64/trellis/ /usr/local/lib64/trellis/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY --from=builder /usr/local/share/trellis/ /usr/local/share/trellis/
 
+ENV PATH $PATH:/usr/local/bin/
+
