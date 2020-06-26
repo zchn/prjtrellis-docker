@@ -11,15 +11,13 @@ RUN git clone --recursive https://github.com/SymbiFlow/prjtrellis
 
 WORKDIR /prjtrellis/libtrellis
 
-RUN cmake -DARCH=ecp5 .
+RUN cmake -DARCH=ecp5 cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis .
 RUN make -j$(nproc)
 RUN make install
 
 FROM alpine:3.12.0
 
-COPY --from=builder /usr/local/lib64/trellis/ /usr/local/lib64/trellis/
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
-COPY --from=builder /usr/local/share/trellis/ /usr/local/share/trellis/
+COPY --from=builder /opt/prjtrellis/ /opt/prjtrellis/
 
-ENV PATH $PATH:/usr/local/bin/
+ENV PATH $PATH:/opt/prjtrellis/bin/
 
