@@ -11,7 +11,7 @@ RUN git clone --recursive https://github.com/SymbiFlow/prjtrellis
 
 WORKDIR /prjtrellis/libtrellis
 
-RUN cmake -DARCH=ecp5 cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis .
+RUN cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis .
 RUN make -j$(nproc)
 RUN make install
 
