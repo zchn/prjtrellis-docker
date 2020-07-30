@@ -1,6 +1,9 @@
 FROM alpine:3.12.0 as builder
 
 RUN apk add --no-cache --virtual build-dependencies \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
     build-base \
     cmake \
     git \
