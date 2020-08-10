@@ -1,4 +1,4 @@
-FROM 0x01be/alpine:edge as builder
+FROM alpine as builder
 
 RUN apk add --no-cache --virtual prjtrellis-build-dependencies \
     build-base \
@@ -15,7 +15,7 @@ RUN cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis .
 RUN make -j$(nproc)
 RUN make install
 
-FROM 0x01be/alpine:edge
+FROM alpine
 
 COPY --from=builder /opt/prjtrellis/ /opt/prjtrellis/
 
