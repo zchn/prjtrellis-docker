@@ -21,3 +21,5 @@ COPY --from=builder /opt/prjtrellis/ /opt/prjtrellis/
 
 ENV PATH $PATH:/opt/prjtrellis/bin/
 
+WORKDIR /workspace
+
