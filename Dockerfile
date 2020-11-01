@@ -1,4 +1,4 @@
-FROM alpine as builder
+FROM alpine as build
 
 RUN apk add --no-cache --virtual prjtrellis-build-dependencies \
     build-base \
@@ -7,19 +7,25 @@ RUN apk add --no-cache --virtual prjtrellis-build-dependencies \
     python3-dev \
     boost-dev
 
-RUN git clone --recursive https://github.com/SymbiFlow/prjtrellis
+ENV REVISION ${MASTER}
+RUN git clone --recursive --branch ${REVISION} https://github.com/SymbiFlow/prjtrellis
 
-WORKDIR /prjtrellis/libtrellis
+WORKDIR /prjtrellis/libtrellis/build
 
-RUN cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis .
+RUN cmake \
+    -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis \
+    ..
 RUN make -j$(nproc)
 RUN make install
 
 FROM alpine
 
-COPY --from=builder /opt/prjtrellis/ /opt/prjtrellis/
-
-ENV PATH $PATH:/opt/prjtrellis/bin/
+COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 
 WORKDIR /workspace
+RUN adduser -D -u 1000 trellis && chown trellis:trellis /workspace
+
+USER trellis
+
+ENV PATH $PATH:/opt/prjtrellis/bin/
 
