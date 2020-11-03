@@ -7,8 +7,8 @@ RUN apk add --no-cache --virtual prjtrellis-build-dependencies \
     python3-dev \
     boost-dev
 
-ENV REVISION ${MASTER}
-RUN git clone --recursive --branch ${REVISION} https://github.com/SymbiFlow/prjtrellis
+ENV REVISION=master
+RUN git clone --recursive --branch ${REVISION} https://github.com/SymbiFlow/prjtrellis /prjtrellis
 
 WORKDIR /prjtrellis/libtrellis/build
 
@@ -22,10 +22,13 @@ FROM alpine
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 
-WORKDIR /workspace
-RUN adduser -D -u 1000 trellis && chown trellis:trellis /workspace
+ENV USER=trellis \
+    WORKSPACE=/workspace
+RUN adduser -D -u 1000 ${USER} &&\
+    mkdir -p ${WORKSPACE} &&\
+    chown -R ${USER}:${USER} ${WORKSPACE}
 
-USER trellis
-
-ENV PATH $PATH:/opt/prjtrellis/bin/
+USER ${USER}
+WORKDIR ${WORKSPACE}
+ENV PATH=${PATH}:/opt/prjtrellis/bin/
 
