@@ -1,34 +1,25 @@
-FROM alpine as build
+FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5 as build
 
-RUN apk add --no-cache --virtual prjtrellis-build-dependencies \
-    build-base \
-    cmake \
-    git \
-    python3-dev \
-    boost-dev
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+    git cmake build-essential wget meson \
+    openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
+    python3 python3-dev python3-setuptools libevent-dev \
+    libboost-filesystem-dev libboost-program-options-dev \
+    libboost-system-dev libboost-thread-dev \
+    libmpc-dev libmpfr-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-ENV REVISION=master
-RUN git clone --recursive --branch ${REVISION} https://github.com/SymbiFlow/prjtrellis /prjtrellis
+WORKDIR /work
 
-WORKDIR /prjtrellis/libtrellis/build
+RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
+    cd prjtrellis/libtrellis && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
+    make -j$(nproc) && \
+    make install
 
-RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis \
-    ..
-RUN make -j$(nproc)
-RUN make install
-
-FROM alpine
+FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 
-ENV USER=trellis \
-    WORKSPACE=/workspace
-RUN adduser -D -u 1000 ${USER} &&\
-    mkdir -p ${WORKSPACE} &&\
-    chown -R ${USER}:${USER} ${WORKSPACE}
-
-USER ${USER}
-WORKDIR ${WORKSPACE}
 ENV PATH=${PATH}:/opt/prjtrellis/bin/
-
