@@ -4,10 +4,9 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
     git cmake build-essential wget meson \
     openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
-    # TODO: Fix prjtrellis so python > 3.5 is also accepted.
-    python3.5 \
-    python3-dev python3-setuptools libevent-dev \
-    libboost-filesystem-dev libboost-program-options-dev \
+    python3 python3-dev python3-setuptools \
+    libevent-dev \
+    libboost-all-dev libboost-program-options-dev \
     libboost-system-dev libboost-thread-dev \
     libmpc-dev libmpfr-dev && \
     rm -rf /var/lib/apt/lists/*
@@ -16,7 +15,7 @@ WORKDIR /work
 
 RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     cd prjtrellis/libtrellis && \
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis -DPYTHON_LIBRARY=/usr/lib/python3.6 . && \
     make -j$(nproc) && \
     make install
 
