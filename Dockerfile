@@ -10,9 +10,9 @@ RUN apt-get update && \
     libboost-system-dev libboost-thread-dev \
     libmpc-dev libmpfr-dev \
     clang bison flex \
-	libreadline-dev gawk tcl-dev libffi-dev \
-	graphviz xdot pkg-config \
-	libboost-python-dev zlib1g-dev && \
+    libreadline-dev gawk tcl-dev libffi-dev \
+    graphviz xdot pkg-config \
+    libboost-python-dev zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
