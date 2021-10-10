@@ -23,3 +23,5 @@ FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 
 ENV PATH=${PATH}:/opt/prjtrellis/bin/
+
+RUN find /opt/prjtrellis
