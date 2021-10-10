@@ -27,10 +27,21 @@ RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     make -j$(nproc) && \
     make install
 
+WORKDIR /work
+
+RUN git clone https://github.com/YosysHQ/yosys.git && \
+    cd yosys && \
+    echo "PREFIX := /opt/yosys" >> Makefile.conf && \
+    make config-clang && \
+    make && make install
+
 FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
+COPY --from=build /opt/yosys /opt/yosys
 
-ENV PATH=${PATH}:/opt/prjtrellis/bin/
+ENV PATH /opt/prjtrellis/bin/:$PATH
+ENV PATH /opt/yosys/bin:$PATH
 
 RUN find /opt/prjtrellis
+RUN find /opt/yosys
