@@ -8,7 +8,11 @@ RUN apt-get update && \
     libevent-dev \
     libboost-filesystem-dev libboost-program-options-dev \
     libboost-system-dev libboost-thread-dev \
-    libmpc-dev libmpfr-dev && \
+    libmpc-dev libmpfr-dev \
+    clang bison flex \
+	libreadline-dev gawk tcl-dev libffi-dev \
+	graphviz xdot pkg-config \
+	libboost-python-dev zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
