@@ -28,6 +28,7 @@ RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     make install
 
 WORKDIR /work
+ENV PATH /opt/prjtrellis/bin/:$PATH
 
 RUN git clone https://github.com/YosysHQ/yosys.git && \
     cd yosys && \
