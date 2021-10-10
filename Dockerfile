@@ -4,7 +4,9 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
     git cmake build-essential wget meson \
     openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
-    python3 python3-dev python3-setuptools libevent-dev \
+    # TODO: Fix prjtrellis so python > 3.5 is also accepted.
+    python3.5 \
+    python3-dev python3-setuptools libevent-dev \
     libboost-filesystem-dev libboost-program-options-dev \
     libboost-system-dev libboost-thread-dev \
     libmpc-dev libmpfr-dev && \
