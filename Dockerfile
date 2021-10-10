@@ -6,7 +6,7 @@ RUN apt-get update && \
     openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
     python3 python3-dev python3-setuptools \
     libevent-dev \
-    libboost-all-dev libboost-program-options-dev \
+    libboost-filesystem-dev libboost-program-options-dev \
     libboost-system-dev libboost-thread-dev \
     libmpc-dev libmpfr-dev && \
     rm -rf /var/lib/apt/lists/*
@@ -16,6 +16,10 @@ WORKDIR /work
 RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     cd prjtrellis/libtrellis && \
     cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis -DPYTHON_LIBRARY=/usr/lib/python3.6 . && \
+    unset C_INCLUDE_PATH && \
+    unset LD_LIBRARY_PATH && \
+    unset CC && \
+    unset CXX && \
     make -j$(nproc) && \
     make install
 
