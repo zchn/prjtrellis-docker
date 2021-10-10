@@ -1,0 +1,25 @@
+
+version: 2.1
+orbs:
+  docker: circleci/docker@1.7.0
+jobs:
+  build-and-push:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: zchn/prjtrellis
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: zchn/prjtrellis
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+workflows:
+  commit:
+    jobs:
+      - docker/hadolint:
+          ignore-rules: 'DL3008,DL3015,DL3018'
+      - build-and-push
