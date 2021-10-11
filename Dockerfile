@@ -1,5 +1,6 @@
 FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e as build
 
+# apt-get dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
     git cmake build-essential wget meson \
@@ -15,30 +16,30 @@ RUN apt-get update && \
     libboost-python-dev zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
 
+# Install prjtrellis
 WORKDIR /work
-
-RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
-    cd prjtrellis/libtrellis && \
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
+RUN git clone --recursive 'https://github.com/YosysHQ/prjtrellis'
+WORKDIR /work/prjtrellis/libtrellis
+RUN cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
     make -j$(nproc) && \
     make install
-
-WORKDIR /work
 ENV PATH /opt/prjtrellis/bin/:$PATH
 
-RUN git clone https://github.com/YosysHQ/yosys.git && \
-    cd yosys && \
-    echo "PREFIX := /opt/yosys" >> Makefile.conf && \
+# Install yosys
+WORKDIR /work
+RUN git clone 'https://github.com/YosysHQ/yosys.git'
+WORKDIR /work/yosys
+RUN echo "PREFIX := /opt/yosys" >> Makefile.conf && \
     make config-clang && \
     make && make install
 
 FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
-COPY --from=build /opt/yosys /opt/yosys
+COPY --from=build /opt/yosys/ /opt/yosys/
 
 ENV PATH /opt/prjtrellis/bin/:$PATH
 ENV PATH /opt/yosys/bin:$PATH
 
-RUN find /opt/prjtrellis
-RUN find /opt/yosys
+RUN find /opt/prjtrellis && \
+    find /opt/yosys
