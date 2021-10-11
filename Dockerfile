@@ -46,6 +46,7 @@ RUN cmake . -DARCH=ecp5 -DTRELLIS_INSTALL_PREFIX='/opt/prjtrellis' -DCMAKE_INSTA
 ENV PATH /opt/nextpnr/bin:$PATH
 
 # Test examples
+ENV PATH /opt/riscv/bin:$PATH
 WORKDIR /work/prjtrellis/examples/ecp5_evn
 RUN make
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
@@ -55,6 +56,13 @@ RUN make
 
 FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e
 
+# apt-get dependencies
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+    git build-essential wget \
+    libreadline-dev tcl-dev srecord && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 COPY --from=build /opt/yosys/ /opt/yosys/
 COPY --from=build /opt/nextpnr/ /opt/nextpnr/
@@ -62,6 +70,7 @@ COPY --from=build /opt/nextpnr/ /opt/nextpnr/
 ENV PATH /opt/prjtrellis/bin/:$PATH
 ENV PATH /opt/yosys/bin:$PATH
 ENV PATH /opt/nextpnr/bin:$PATH
+ENV PATH /opt/riscv/bin:$PATH
 
 RUN find /opt/prjtrellis && \
     find /opt/yosys && \
