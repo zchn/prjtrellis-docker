@@ -40,6 +40,7 @@ ENV PATH /opt/yosys/bin:$PATH
 WORKDIR /work
 RUN git clone 'https://github.com/YosysHQ/nextpnr.git'
 WORKDIR /work/nextpnr
+# hadolint ignore=SC2046
 RUN cmake . -DARCH=ecp5 -DTRELLIS_INSTALL_PREFIX='/opt/prjtrellis' -DCMAKE_INSTALL_PREFIX='/opt/nextpnr' && \
     make -j$(nproc) && make install
 ENV PATH /opt/nextpnr/bin:$PATH
