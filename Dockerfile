@@ -19,7 +19,7 @@ WORKDIR /work
 
 RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     cd prjtrellis/libtrellis && \
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis -DPYTHON_LIBRARY=/usr/lib/python3.6 . && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
     make -j$(nproc) && \
     make install
 
