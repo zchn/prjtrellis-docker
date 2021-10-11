@@ -29,8 +29,8 @@ ENV PATH /opt/prjtrellis/bin/:$PATH
 WORKDIR /work
 RUN git clone 'https://github.com/YosysHQ/yosys.git'
 WORKDIR /work/yosys
-RUN echo "PREFIX := /opt/yosys" >> Makefile.conf && \
-    make config-clang && \
+RUN make config-clang && \
+    echo "PREFIX := /opt/yosys" >> Makefile.conf && \
     make && make install
 
 FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e
