@@ -1,4 +1,4 @@
-FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5 as build
+FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e as build
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -20,10 +20,6 @@ WORKDIR /work
 RUN git clone --recursive https://github.com/YosysHQ/prjtrellis && \
     cd prjtrellis/libtrellis && \
     cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis -DPYTHON_LIBRARY=/usr/lib/python3.6 . && \
-    unset C_INCLUDE_PATH && \
-    unset LD_LIBRARY_PATH && \
-    unset CC && \
-    unset CXX && \
     make -j$(nproc) && \
     make install
 
@@ -36,7 +32,7 @@ RUN git clone https://github.com/YosysHQ/yosys.git && \
     make config-clang && \
     make && make install
 
-FROM zchn/riscv-gnu-toolchain:6c16b3c03b602dc59684ef279827a647a12046c5
+FROM zchn/riscv-gnu-toolchain:ec0d9d955eb7995c979c7cc6297391153a5f050e
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 COPY --from=build /opt/yosys /opt/yosys
