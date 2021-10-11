@@ -20,6 +20,7 @@ RUN apt-get update && \
 WORKDIR /work
 RUN git clone --recursive 'https://github.com/YosysHQ/prjtrellis'
 WORKDIR /work/prjtrellis/libtrellis
+# hadolint ignore=SC2046
 RUN cmake -DCMAKE_INSTALL_PREFIX='/opt/prjtrellis' . && \
     make -j$(nproc) && \
     make install
