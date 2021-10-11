@@ -20,7 +20,7 @@ RUN apt-get update && \
 WORKDIR /work
 RUN git clone --recursive 'https://github.com/YosysHQ/prjtrellis'
 WORKDIR /work/prjtrellis/libtrellis
-RUN cmake -DCMAKE_INSTALL_PREFIX=/opt/prjtrellis . && \
+RUN cmake -DCMAKE_INSTALL_PREFIX='/opt/prjtrellis' . && \
     make -j$(nproc) && \
     make install
 ENV PATH /opt/prjtrellis/bin/:$PATH
