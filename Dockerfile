@@ -14,7 +14,7 @@ RUN apt-get update && \
     libreadline-dev gawk tcl-dev libffi-dev \
     graphviz xdot pkg-config \
     libboost-python-dev zlib1g-dev \
-    clang-format libboost-iostreams-dev libeigen3-dev && \
+    clang-format libboost-iostreams-dev libeigen3-dev srecord && \
     rm -rf /var/lib/apt/lists/*
 
 # Install prjtrellis
