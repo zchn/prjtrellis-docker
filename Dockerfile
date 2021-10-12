@@ -52,7 +52,9 @@ RUN make
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
 RUN make
 WORKDIR /work/prjtrellis/examples/soc_ecp5_evn
-RUN make
+RUN alias riscv32-unknown-elf-gcc=riscv64-unknown-elf-gcc && \
+    alias riscv32-unknown-elf-objcopy=riscv64-unknown-elf-objcopy && \
+    make
 
 FROM zchn/riscv-gnu-toolchain:7fc9335d327431778560d0e19e566b3f6eac7ab0
 
