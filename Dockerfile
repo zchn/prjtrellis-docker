@@ -51,9 +51,12 @@ WORKDIR /work/prjtrellis/examples/ecp5_evn
 RUN make
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
 RUN make
+WORKDIR /work/prjtrellis/examples/soc_ecp5_evn/bin
+ENV PATH /work/prjtrellis/examples/soc_ecp5_evn/bin:$PATH
 WORKDIR /work/prjtrellis/examples/soc_ecp5_evn
-RUN alias riscv32-unknown-elf-gcc='riscv64-unknown-elf-gcc' && \
-    alias riscv32-unknown-elf-objcopy='riscv64-unknown-elf-objcopy' && \
+RUN ln -s /opt/riscv/bin/riscv64-unknown-elf-gcc ./bin/riscv32-unknown-elf-gcc && \
+    ln -s /opt/riscv/bin/riscv64-unknown-elf-objcopy ./bin/riscv32-unknown-elf-objcopy && \
+    chmod +x ./bin/riscv32-* && \
     make
 
 FROM zchn/riscv-gnu-toolchain:7fc9335d327431778560d0e19e566b3f6eac7ab0
