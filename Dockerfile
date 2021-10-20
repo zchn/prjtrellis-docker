@@ -1,4 +1,4 @@
-FROM zchn/riscv-gnu-toolchain:7fc9335d327431778560d0e19e566b3f6eac7ab0 as build
+FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445 as build
 
 # apt-get dependencies
 RUN apt-get update && \
@@ -52,7 +52,7 @@ RUN make
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
 RUN make
 
-FROM zchn/riscv-gnu-toolchain:7fc9335d327431778560d0e19e566b3f6eac7ab0
+FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445
 
 # apt-get dependencies
 RUN apt-get update && \
