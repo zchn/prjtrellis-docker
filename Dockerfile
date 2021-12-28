@@ -1,9 +1,11 @@
 FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445 as build
 
+ENV DEBIAN_FRONTEND "noninteractive"
+
 # apt-get dependencies
 RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-    git cmake build-essential wget meson \
+    apt-get install --yes \
+    git build-essential wget meson \
     openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
     python3 python3-dev python3-setuptools \
     libevent-dev \
@@ -15,6 +17,12 @@ RUN apt-get update && \
     graphviz xdot pkg-config \
     libboost-python-dev zlib1g-dev \
     clang-format libboost-iostreams-dev libeigen3-dev srecord && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install latest cmake
+WORKDIR /work
+RUN wget https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive.sh && apt-get update && \
+    apt-get install --yes cmake && \
     rm -rf /var/lib/apt/lists/*
 
 # Install prjtrellis
