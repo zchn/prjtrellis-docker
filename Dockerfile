@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Install latest cmake
 WORKDIR /work
-RUN wget https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive.sh && apt-get update && \
+RUN wget -q https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive.sh && apt-get update && \
     apt-get install --yes cmake && \
     rm -rf /var/lib/apt/lists/*
 
