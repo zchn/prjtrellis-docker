@@ -34,6 +34,7 @@ RUN cmake -DCMAKE_INSTALL_PREFIX='/opt/prjtrellis' . && \
     make -j$(nproc) && \
     make install
 ENV PATH /opt/prjtrellis/bin/:$PATH
+ENV TRELLIS /opt/prjtrellis/share/trellis
 
 # Install yosys
 WORKDIR /work
