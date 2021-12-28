@@ -57,9 +57,9 @@ ENV PATH /opt/nextpnr/bin:$PATH
 # Test examples
 ENV PATH /opt/riscv/bin:$PATH
 WORKDIR /work/prjtrellis/examples/ecp5_evn
-RUN make
+# RUN make
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
-RUN make
+# RUN make
 
 FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445
 
@@ -71,6 +71,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
+COPY --from=build /work/prjtrellis/examples/ /opt/prjtrellis/examples/
 COPY --from=build /opt/yosys/ /opt/yosys/
 COPY --from=build /opt/nextpnr/ /opt/nextpnr/
 
