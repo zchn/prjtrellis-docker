@@ -8,7 +8,7 @@ RUN apt-get update && \
     git build-essential wget meson \
     openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
     python3 python3-dev python3-setuptools \
-    libevent-dev \
+    libevent-dev libftdi1-dev \
     libboost-filesystem-dev libboost-program-options-dev \
     libboost-system-dev libboost-thread-dev \
     libmpc-dev libmpfr-dev \
@@ -24,6 +24,13 @@ WORKDIR /work
 RUN wget -q https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive.sh && apt-get update && \
     apt-get install --yes cmake && \
     rm -rf /var/lib/apt/lists/*
+
+# Install IceStorm
+WORKDIR /work
+RUN git clone https://github.com/YosysHQ/icestorm.git
+WORKDIR /work/icestorm
+RUN make -j$(nproc) && PREFIX=/opt/icestorm make install
+ENV PATH /opt/icestorm/bin/:$PATH
 
 # Install prjtrellis
 WORKDIR /work
@@ -70,6 +77,8 @@ RUN apt-get update && \
     libreadline-dev tcl-dev srecord && \
     rm -rf /var/lib/apt/lists/*
 
+COPY --from=build /opt/icestorm/ /opt/icestorm/
+COPY --from=build /work/icestorm/examples/ /opt/icestorm/examples/
 COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
 COPY --from=build /work/prjtrellis/examples/ /opt/prjtrellis/examples/
 COPY --from=build /opt/yosys/ /opt/yosys/
