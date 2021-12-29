@@ -29,7 +29,7 @@ RUN wget -q https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive
 WORKDIR /work
 RUN git clone https://github.com/YosysHQ/icestorm.git
 WORKDIR /work/icestorm
-RUN make -j$(nproc) && PREFIX=/opt/icestorm make install
+RUN make && PREFIX=/opt/icestorm make install
 ENV PATH /opt/icestorm/bin/:$PATH
 
 # Install prjtrellis
