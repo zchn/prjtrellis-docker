@@ -73,7 +73,7 @@ FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445
 # apt-get dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-    git build-essential wget \
+    git build-essential wget picocom \
     libreadline-dev tcl-dev srecord && \
     rm -rf /var/lib/apt/lists/*
 
