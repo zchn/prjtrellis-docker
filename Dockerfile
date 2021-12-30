@@ -84,6 +84,7 @@ COPY --from=build /work/prjtrellis/examples/ /opt/prjtrellis/examples/
 COPY --from=build /opt/yosys/ /opt/yosys/
 COPY --from=build /opt/nextpnr/ /opt/nextpnr/
 
+ENV PATH /opt/icestorm/bin/:$PATH
 ENV PATH /opt/prjtrellis/bin/:$PATH
 ENV PATH /opt/yosys/bin:$PATH
 ENV PATH /opt/nextpnr/bin:$PATH
