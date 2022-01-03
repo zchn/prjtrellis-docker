@@ -68,38 +68,3 @@ WORKDIR /work/prjtrellis/examples/ecp5_evn
 WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
 # RUN make
 
-FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445
-
-# apt-get dependencies
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-    git build-essential wget picocom meson \
-    openocd device-tree-compiler fakeroot libjsoncpp-dev verilator \
-    python3 python3-dev python3-setuptools \
-    libevent-dev libftdi1-dev \
-    libboost-filesystem-dev libboost-program-options-dev \
-    libboost-system-dev libboost-thread-dev \
-    libmpc-dev libmpfr-dev \
-    clang bison flex \
-    libreadline-dev gawk tcl-dev libffi-dev \
-    graphviz xdot pkg-config \
-    libboost-python-dev zlib1g-dev \
-    clang-format libboost-iostreams-dev libeigen3-dev srecord && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --from=build /opt/icestorm/ /opt/icestorm/
-COPY --from=build /work/icestorm/examples/ /opt/icestorm/examples/
-COPY --from=build /opt/prjtrellis/ /opt/prjtrellis/
-COPY --from=build /work/prjtrellis/examples/ /opt/prjtrellis/examples/
-COPY --from=build /opt/yosys/ /opt/yosys/
-COPY --from=build /opt/nextpnr/ /opt/nextpnr/
-
-ENV PATH /opt/icestorm/bin/:$PATH
-ENV PATH /opt/prjtrellis/bin/:$PATH
-ENV PATH /opt/yosys/bin:$PATH
-ENV PATH /opt/nextpnr/bin:$PATH
-ENV PATH /opt/riscv/bin:$PATH
-
-RUN find /opt/prjtrellis && \
-    find /opt/yosys && \
-    find /opt/nextpnr
