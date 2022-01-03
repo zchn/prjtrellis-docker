@@ -5,6 +5,7 @@ orbs:
 jobs:
   build-and-push:
     executor: docker/docker
+    resource_class: large
     steps:
       - setup_remote_docker
       - checkout
