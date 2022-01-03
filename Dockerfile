@@ -25,13 +25,6 @@ RUN wget -q https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive
     apt-get install --yes cmake && \
     rm -rf /var/lib/apt/lists/*
 
-# Install IceStorm
-WORKDIR /work
-RUN git clone https://github.com/YosysHQ/icestorm.git
-WORKDIR /work/icestorm
-RUN make && PREFIX=/opt/icestorm make install
-ENV PATH /opt/icestorm/bin/:$PATH
-
 # Install prjtrellis
 WORKDIR /work
 RUN git clone --recursive 'https://github.com/YosysHQ/prjtrellis'
