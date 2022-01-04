@@ -62,3 +62,5 @@ ENV PATH /opt/nextpnr/bin:$PATH
 # WORKDIR /src/prjtrellis/examples/ecp5_evn_multiboot
 # RUN make
 
+WORKDIR /work
+CMD /bin/bash
