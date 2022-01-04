@@ -40,6 +40,7 @@ ENV TRELLIS /opt/prjtrellis/share/trellis
 WORKDIR /work
 RUN git clone 'https://github.com/YosysHQ/yosys.git'
 WORKDIR /work/yosys
+# hadolint ignore=SC2046
 RUN make config-clang && \
     echo "PREFIX := /opt/yosys" >> Makefile.conf && \
     make -j$(nproc) && make install
