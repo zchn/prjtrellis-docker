@@ -42,7 +42,7 @@ RUN git clone 'https://github.com/YosysHQ/yosys.git'
 WORKDIR /work/yosys
 RUN make config-clang && \
     echo "PREFIX := /opt/yosys" >> Makefile.conf && \
-    make && make install
+    make -j$(nproc) && make install
 ENV PATH /opt/yosys/bin:$PATH
 
 # Install nextpnr
