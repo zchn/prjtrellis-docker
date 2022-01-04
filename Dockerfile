@@ -39,7 +39,7 @@ ENV TRELLIS /opt/prjtrellis/share/trellis
 
 # Install yosys
 WORKDIR /src
-RUN wget https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.12.tar.gz && tar xvf ./yosys-0.12.tar.gz
+RUN wget -q https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.12.tar.gz && tar xvf ./yosys-0.12.tar.gz
 WORKDIR /src/yosys-yosys-0.12
 # hadolint ignore=SC2046
 RUN make config-clang && \
@@ -49,7 +49,7 @@ ENV PATH /opt/yosys/bin:$PATH
 
 # Install nextpnr
 WORKDIR /src
-RUN wget https://github.com/YosysHQ/nextpnr/archive/refs/tags/nextpnr-0.1.tar.gz && tar xvf ./nextpnr-0.1.tar.gz
+RUN wget -q https://github.com/YosysHQ/nextpnr/archive/refs/tags/nextpnr-0.1.tar.gz && tar xvf ./nextpnr-0.1.tar.gz
 WORKDIR /src/nextpnr-nextpnr-0.1
 # hadolint ignore=SC2046
 RUN cmake . -DARCH=ecp5 -DTRELLIS_INSTALL_PREFIX='/opt/prjtrellis' -DCMAKE_INSTALL_PREFIX='/opt/nextpnr' && \
