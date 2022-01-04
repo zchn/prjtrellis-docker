@@ -1,6 +1,7 @@
 FROM zchn/riscv-gnu-toolchain:3f50815a730ddeba9378b586c03d3b479a117445 as build
 
 ENV DEBIAN_FRONTEND "noninteractive"
+ENV PATH /opt/riscv/bin:$PATH
 
 # apt-get dependencies
 RUN apt-get update && \
@@ -20,15 +21,15 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install latest cmake
-WORKDIR /work
+WORKDIR /src
 RUN wget -q https://apt.kitware.com/kitware-archive.sh && bash ./kitware-archive.sh && apt-get update && \
     apt-get install --yes cmake && \
     rm -rf /var/lib/apt/lists/*
 
 # Install prjtrellis
-WORKDIR /work
+WORKDIR /src
 RUN git clone --recursive 'https://github.com/YosysHQ/prjtrellis'
-WORKDIR /work/prjtrellis/libtrellis
+WORKDIR /src/prjtrellis/libtrellis
 # hadolint ignore=SC2046
 RUN cmake -DCMAKE_INSTALL_PREFIX='/opt/prjtrellis' . && \
     make -j$(nproc) && \
@@ -37,9 +38,9 @@ ENV PATH /opt/prjtrellis/bin/:$PATH
 ENV TRELLIS /opt/prjtrellis/share/trellis
 
 # Install yosys
-WORKDIR /work
-RUN git clone 'https://github.com/YosysHQ/yosys.git'
-WORKDIR /work/yosys
+WORKDIR /src
+RUN wget https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.12.tar.gz && tar xvf ./yosys-0.12.tar.gz
+WORKDIR /src/yosys-yosys-0.12
 # hadolint ignore=SC2046
 RUN make config-clang && \
     echo "PREFIX := /opt/yosys" >> Makefile.conf && \
@@ -47,18 +48,17 @@ RUN make config-clang && \
 ENV PATH /opt/yosys/bin:$PATH
 
 # Install nextpnr
-WORKDIR /work
-RUN git clone 'https://github.com/YosysHQ/nextpnr.git'
-WORKDIR /work/nextpnr
+WORKDIR /src
+RUN wget https://github.com/YosysHQ/nextpnr/archive/refs/tags/nextpnr-0.1.tar.gz && tar xvf ./nextpnr-0.1.tar.gz
+WORKDIR /src/nextpnr-nextpnr-0.1
 # hadolint ignore=SC2046
 RUN cmake . -DARCH=ecp5 -DTRELLIS_INSTALL_PREFIX='/opt/prjtrellis' -DCMAKE_INSTALL_PREFIX='/opt/nextpnr' && \
     make -j$(nproc) && make install
 ENV PATH /opt/nextpnr/bin:$PATH
 
 # Test examples
-ENV PATH /opt/riscv/bin:$PATH
-WORKDIR /work/prjtrellis/examples/ecp5_evn
+# WORKDIR /src/prjtrellis/examples/ecp5_evn
 # RUN make
-WORKDIR /work/prjtrellis/examples/ecp5_evn_multiboot
+# WORKDIR /src/prjtrellis/examples/ecp5_evn_multiboot
 # RUN make
 
