@@ -63,4 +63,4 @@ ENV PATH /opt/nextpnr/bin:$PATH
 # RUN make
 
 WORKDIR /work
-CMD /bin/bash
+CMD ["/bin/bash"]
